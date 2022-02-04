@@ -36,7 +36,7 @@ CXX 		= g++
 RM 			= rm
 STRIP 		= strip
 UPX 		= upx
-WINDRES 	= windres
+WINDRES 	= ./windres
 
 # Flags
 CXXFLAGS 	= -O3 -Wall -I"./deps/zlib/" -I"./deps/libpng/" -I"./deps/squish"
@@ -48,7 +48,7 @@ UPXFLAGS 	= -9
 ###############################################################################
 
 # Target binary
-TARGET = $(BINDIR)$(PRJNAME).exe
+TARGET = $(BINDIR)$(PRJNAME)
 
 # Debug test...
 ifeq ($(DEBUG),True)
@@ -59,7 +59,7 @@ endif
 all : libsquish-make libpng-make $(OBJS)
 	$(CXX) -o $(TARGET) $(OBJS) $(LDFLAGS) $(CXXFLAGS)
 	$(STRIP) $(TARGET)
-	$(UPX) $(UPXFLAGS) $(TARGET)
+# 	$(UPX) $(UPXFLAGS) $(TARGET) # not needed for MacOS
 	
 # Compile sources
 $(OBJSDIR)%.o: %.cpp
@@ -67,7 +67,7 @@ $(OBJSDIR)%.o: %.cpp
 	
 # Include win32 resources
 $(OBJSDIR)rsrc.o: rsrc.rc
-	$(WINDRES) -i rsrc.rc -o $(OBJSDIR)rsrc.o
+	$(WINDRES) -i rsrc.rc -o $(OBJSDIR)rsrc.o -Iinclude
 	
 # Clean	
 clean:
